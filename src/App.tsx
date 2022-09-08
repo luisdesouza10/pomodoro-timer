@@ -1,13 +1,10 @@
-import { Button } from "./components";
+import { BrowserRouter } from "react-router-dom";
+import { Router } from "./Router";
 
 export function App() {
   return (
-    <>
-      <Button variant="primary" />
-      <Button variant="secondary" />
-      <Button variant="danger" />
-      <Button variant="success" />
-      <Button />
-    </>
+    <BrowserRouter>
+      <Router />
+    </BrowserRouter>
   );
 }
