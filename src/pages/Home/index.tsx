@@ -33,6 +33,11 @@ export function Home() {
             id="minutesAmount"
             placeholder="00"
             step={5}
+            max={60}
+            min={5}
+            onKeyDown={(event) => {
+              event.preventDefault();
+            }}
           />
 
           <span>minutos</span>
