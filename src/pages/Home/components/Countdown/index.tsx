@@ -1,23 +1,10 @@
 import { differenceInSeconds } from "date-fns";
-import { useEffect, useState } from "react";
-import { Cycle } from "../../../../@types/Cycles";
+import { useContext, useEffect, useState } from "react";
+import { CyclesContext } from "../..";
 import { CountdownContainer, Separator } from "./styles";
 
-interface CountdownProps {
-  activeCycle: Cycle;
-  cycles: Cycle[];
-  activeCycleId: any;
-  changeCycles: (cycles: Cycle[]) => void;
-  changeActiveCycleId: (activeCycleId: string | null) => void;
-}
-
-export function Countdown({
-  activeCycle,
-  cycles,
-  activeCycleId,
-  changeCycles,
-  changeActiveCycleId,
-}: CountdownProps) {
+export function Countdown({}) {
+  const { activeCycle, activeCycleId } = useContext(CyclesContext);
   const [amountSecondsPassed, setAmountSecondsPassed] = useState<number>(0);
 
   const totalSeconds = activeCycle ? activeCycle.minutesAmount * 60 : 0;

@@ -13,9 +13,12 @@ import {
 import { Countdown, NewCycleForm } from "./components";
 import { Cycle } from "../../@types/Cycles";
 
-interface CyclesContextType {}
+interface CyclesContextType {
+  activeCycle: Cycle | undefined;
+  activeCycleId: String | null;
+}
 
-const CyclesContext = createContext({});
+export const CyclesContext = createContext({} as CyclesContextType);
 
 export function Home() {
   const [cycles, setCycles] = useState<Cycle[]>([]);
@@ -59,16 +62,10 @@ export function Home() {
   return (
     <HomeContainer>
       <form action="" onSubmit={handleSubmit(handleCreateNewCycle)}>
-        <NewCycleForm />
-        <Countdown
-          cycles={cycles}
-          activeCycle={activeCycle}
-          activeCycleId={activeCycleId}
-          changeActiveCycleId={(activeCycleId: string | null) =>
-            setActiveCycleId(activeCycleId)
-          }
-          changeCycles={(cycles: Cycle[]) => setCycles(cycles)}
-        />
+        <CyclesContext.Provider value={{ activeCycle, activeCycleId }}>
+          <NewCycleForm />
+          <Countdown />
+        </CyclesContext.Provider>
         {activeCycle ? (
           <StopCountdownButton type="button" onClick={handleInterruptCycle}>
             <HandPalm size={24} />
