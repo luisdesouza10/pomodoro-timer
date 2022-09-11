@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { HandPalm, Play } from "phosphor-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -12,6 +12,10 @@ import {
 } from "./styles";
 import { Countdown, NewCycleForm } from "./components";
 import { Cycle } from "../../@types/Cycles";
+
+interface CyclesContextType {}
+
+const CyclesContext = createContext({});
 
 export function Home() {
   const [cycles, setCycles] = useState<Cycle[]>([]);
