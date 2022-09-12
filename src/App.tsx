@@ -1,10 +1,13 @@
 import { BrowserRouter } from "react-router-dom";
+import { CyclesContextProvider } from "./contexts/CyclesContext";
 import { Router } from "./Router";
 
 export function App() {
   return (
     <BrowserRouter>
-      <Router />
+      <CyclesContextProvider>
+        <Router />
+      </CyclesContextProvider>
     </BrowserRouter>
   );
 }
