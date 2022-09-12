@@ -4,8 +4,13 @@ import { CyclesContext } from "../..";
 import { CountdownContainer, Separator } from "./styles";
 
 export function Countdown({}) {
-  const { activeCycle, activeCycleId } = useContext(CyclesContext);
-  const [amountSecondsPassed, setAmountSecondsPassed] = useState<number>(0);
+  const {
+    activeCycle,
+    activeCycleId,
+    amountSecondsPassed,
+    markCurrentCycleAsFinished,
+    changeSecondsPassed,
+  } = useContext(CyclesContext);
 
   const totalSeconds = activeCycle ? activeCycle.minutesAmount * 60 : 0;
 
@@ -28,37 +33,35 @@ export function Countdown({}) {
           activeCycle.startDate
         );
         if (secondsDifference >= totalSeconds) {
-          const arrayWithInterruptedCycle = cycles.map((cycle) => {
-            if (cycle.id === activeCycleId) {
-              return { ...cycle, finishedDate: new Date() };
-            } else {
-              return cycle;
-            }
-          });
+          markCurrentCycleAsFinished();
 
-          changeCycles(arrayWithInterruptedCycle);
-
-          changeActiveCycleId(null);
+          changeSecondsPassed(totalSeconds);
 
           clearInterval(interval);
         } else {
-          setAmountSecondsPassed(secondsDifference);
+          changeSecondsPassed(secondsDifference);
         }
       }, 1000);
     }
 
-    useEffect(() => {
-      if (activeCycle) {
-        document.title = `${activeCycle.task} ${minutes}:${seconds}`;
-      } else {
-        document.title = "Pomodoro Timer";
-      }
-    }, [activeCycle, minutes, seconds]);
-
     return () => {
       clearInterval(interval);
     };
-  }, [activeCycle, totalSeconds, activeCycleId]);
+  }, [
+    activeCycle,
+    totalSeconds,
+    activeCycleId,
+    markCurrentCycleAsFinished,
+    changeSecondsPassed,
+  ]);
+
+  useEffect(() => {
+    if (activeCycle) {
+      document.title = `${activeCycle.task} ${minutes}:${seconds}`;
+    } else {
+      document.title = "Pomodoro Timer";
+    }
+  }, [activeCycle, minutes, seconds]);
 
   return (
     <CountdownContainer>
