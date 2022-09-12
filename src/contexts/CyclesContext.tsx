@@ -1,5 +1,11 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useReducer } from "react";
 import { Cycle } from "../@types/Cycles";
+import {
+  addNewCycleAction,
+  interruptCurrentCycleAction,
+  markCurrentCycleAsFinishedAction,
+} from "../reducers/cycles/actions";
+import { cyclesReducer } from "../reducers/cycles/reducer";
 
 interface CreateCycleData {
   task: string;
@@ -24,21 +30,19 @@ interface CycleContextProviderProps {
 }
 
 export function CyclesContextProvider({ children }: CycleContextProviderProps) {
-  const [cycles, setCycles] = useState<Cycle[]>([]);
-  const [activeCycleId, setActiveCycleId] = useState<string | null>(null);
+  const [cyclesState, dispatch] = useReducer(cyclesReducer, {
+    cycles: [],
+    activeCycleId: null,
+  });
+
   const [amountSecondsPassed, setAmountSecondsPassed] = useState<number>(0);
+
+  const { cycles, activeCycleId } = cyclesState;
 
   const activeCycle = cycles.find((cycle) => cycle.id === activeCycleId);
 
   function markCurrentCycleAsFinished() {
-    const arrayWithInterruptedCycle = cycles.map((cycle) => {
-      if (cycle.id === activeCycleId) {
-        return { ...cycle, finishedDate: new Date() };
-      } else {
-        return cycle;
-      }
-    });
-    setCycles(arrayWithInterruptedCycle);
+    dispatch(markCurrentCycleAsFinishedAction());
   }
 
   function changeSecondsPassed(seconds: number) {
@@ -53,23 +57,12 @@ export function CyclesContextProvider({ children }: CycleContextProviderProps) {
       minutesAmount: data.minutesAmount,
       startDate: new Date(),
     };
-    setActiveCycleId(id);
-    setCycles((state) => [...state, newCycle]);
+    dispatch(addNewCycleAction(newCycle));
     setAmountSecondsPassed(0);
   }
 
   function interruptCurrentCycle() {
-    const arrayWithInterruptedCycle = cycles.map((cycle) => {
-      if (cycle.id === activeCycleId) {
-        return { ...cycle, interruptedDate: new Date() };
-      } else {
-        return cycle;
-      }
-    });
-
-    setCycles(arrayWithInterruptedCycle);
-
-    setActiveCycleId(null);
+    dispatch(interruptCurrentCycleAction());
   }
 
   return (
