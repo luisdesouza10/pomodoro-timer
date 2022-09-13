@@ -36,7 +36,7 @@ export function cyclesReducer(state: CyclesState, action: any) {
       }
       return produce(state, (draft) => {
         draft.activeCycleId = null;
-        draft.cycles[currentCycleIndex].finishedDate = new Date();
+        draft.cycles[currentCycleToFinishedIndex].finishedDate = new Date();
       });
 
     default:
