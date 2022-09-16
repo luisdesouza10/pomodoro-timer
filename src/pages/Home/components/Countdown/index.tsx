@@ -55,14 +55,6 @@ export function Countdown({}) {
     changeSecondsPassed,
   ]);
 
-  useEffect(() => {
-    if (activeCycle) {
-      document.title = `${activeCycle.task} ${minutes}:${seconds}`;
-    } else {
-      document.title = "Pomodoro Timer";
-    }
-  }, [activeCycle, minutes, seconds]);
-
   return (
     <CountdownContainer>
       <span>{minutes[0]}</span>

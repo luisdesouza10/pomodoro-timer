@@ -43,6 +43,11 @@ export function CyclesContextProvider({ children }: CycleContextProviderProps) {
       );
       if (storedStateAsJSON) {
         return JSON.parse(storedStateAsJSON);
+      } else {
+        return {
+          cycles: [],
+          activeCycleId: null,
+        };
       }
     }
   );
