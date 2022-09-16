@@ -22,33 +22,34 @@ export function History() {
             </tr>
           </thead>
           <tbody>
-            {cycles.map((cycle) => {
-              return (
-                <tr>
-                  <td>{cycle.task}</td>
-                  <td>{cycle.minutesAmount}</td>
-                  <td>
-                    {formatDistanceToNow(new Date(cycle.startDate), {
-                      locale: ptBR,
-                      addSuffix: true,
-                    })}
-                  </td>
-                  <td>
-                    {cycle.finishedDate && (
-                      <Status statusColor="green">Concluído</Status>
-                    )}
+            {cycles &&
+              cycles.map((cycle) => {
+                return (
+                  <tr>
+                    <td>{cycle.task}</td>
+                    <td>{cycle.minutesAmount}</td>
+                    <td>
+                      {formatDistanceToNow(new Date(cycle.startDate), {
+                        locale: ptBR,
+                        addSuffix: true,
+                      })}
+                    </td>
+                    <td>
+                      {cycle.finishedDate && (
+                        <Status statusColor="green">Concluído</Status>
+                      )}
 
-                    {cycle.interruptedDate && (
-                      <Status statusColor="red">Interrompido</Status>
-                    )}
+                      {cycle.interruptedDate && (
+                        <Status statusColor="red">Interrompido</Status>
+                      )}
 
-                    {!cycle.finishedDate && !cycle.interruptedDate && (
-                      <Status statusColor="yellow">Em andamento</Status>
-                    )}
-                  </td>
-                </tr>
-              );
-            })}
+                      {!cycle.finishedDate && !cycle.interruptedDate && (
+                        <Status statusColor="yellow">Em andamento</Status>
+                      )}
+                    </td>
+                  </tr>
+                );
+              })}
           </tbody>
         </table>
       </HistoryList>
